@@ -6,10 +6,8 @@ using UnityEngine.iOS;
 
 public class Disappear : MonoBehaviour
 {
- 
   public void ToggleVisibility()
   {
-  
   Renderer rend = gameObject.GetComponent<Renderer>();
   Debug.Log(rend);
   if (rend.enabled)

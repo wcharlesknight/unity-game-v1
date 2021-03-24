@@ -5,35 +5,56 @@ using UnityEngine.UI;
 using System;
 using System.Timers;
 using TMPro;
+using SimpleJSON; 
+using UnityEngine.Networking;
+using System.IO;
 
 public class TimerC : MonoBehaviour
 {   
+    public float timeRemaining = 7;
+    public bool timerIsRunning = false;
     public GameObject words; 
-    private System.Timers.Timer GameTimer;
-    int nEventsFired = 0; 
-    
+  
     void Start()
     {   
-        GameTimer = new System.Timers.Timer();
-        GameTimer.Interval = 1000; 
-        GameTimer.Start();
-        GameTimer.Elapsed += AddTime;
-  
+        timerIsRunning = true;
     }
 
     void Update()
-    {   
-        gameObject.GetComponent<TMP_Text>().text = Convert.ToString(nEventsFired, 10);
+    { 
+      gameObject.GetComponent<TMP_Text>().text = timeRemaining.ToString("0");
+      if (timerIsRunning)
+      {
+        if (timeRemaining > 0)
+        {
+          timeRemaining -= Time.deltaTime; 
+        }
+        else
+        {
+          StartCoroutine(GetLetters());
+          timeRemaining = 7; 
+        }
+      }
     }
-    
-    public void AddTime(object source, ElapsedEventArgs e)
-    {   
-        Debug.Log(nEventsFired);
-        nEventsFired++;
-        if (nEventsFired == 7)
-          {
-            nEventsFired = 0; 
-          }
-      
+
+    public delegate void WordSetter(JSONNode letter);
+
+    public void SetWord(JSONNode letters)
+    { 
+      Text text = words.GetComponent<Text>();
+      text.text = "";
+      foreach (JSONNode element in letters)
+      {
+        text.text += element["character"];
+      }
+    }
+
+    IEnumerator GetLetters()
+    {
+      UnityWebRequest letters = UnityWebRequest.Get("http://localhost:3000/letters");
+      yield return letters.SendWebRequest();
+      JSONNode letterInfo = JSON.Parse(letters.downloadHandler.text); 
+      WordSetter del = SetWord;
+      del(letterInfo);
     }
 }

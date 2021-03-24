@@ -1,21 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GlobalState; 
 
 public class AnimationStart : MonoBehaviour
 {
-
+  
     void Start()
     {
         Animator anim = gameObject.GetComponent<Animator>();
         anim.enabled = false;
     }
-
-  
+    
   public void ToggleAnimation()
   {
-    Animator anim = gameObject.GetComponent<Animator>();
-    anim.enabled = true;
-    anim.Play("UpDown", -1, 0f);
+      Animator anim = gameObject.GetComponent<Animator>();
+      anim.enabled = true;
+      anim.Play("UpDown", -1, 0f);
   }
 }

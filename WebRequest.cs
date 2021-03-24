@@ -21,7 +21,7 @@ public class WebRequest : MonoBehaviour
 
     public void SetWord(JSONNode letters)
     { 
-      List<object> MainLetters = new List<object>();
+      // List<object> MainLetters = new List<object>();
       Text text = gameObject.GetComponent<Text>();
       text.text = "";
       foreach (JSONNode element in letters)

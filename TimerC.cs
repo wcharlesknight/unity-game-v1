@@ -13,16 +13,19 @@ public class TimerC : MonoBehaviour
 {   
     public float timeRemaining = 7;
     public bool timerIsRunning = false;
-    public GameObject words; 
-  
+    public GameObject[] GLetters; 
+    
     void Start()
     {   
         timerIsRunning = true;
+        // Debug.Log(GLetters[0].GetComponent<Text>().text);
+        // Text text = GLetters[0].GetComponent<Text>();
+        // Debug.Log(text); 
     }
 
     void Update()
     { 
-      gameObject.GetComponent<TMP_Text>().text = timeRemaining.ToString("0");
+      gameObject.GetComponent<TextMesh>().text = timeRemaining.ToString("0");
       if (timerIsRunning)
       {
         if (timeRemaining > 0)
@@ -41,12 +44,19 @@ public class TimerC : MonoBehaviour
 
     public void SetWord(JSONNode letters)
     { 
-      Text text = words.GetComponent<Text>();
-      text.text = "";
+      List<JSONNode> Glets = new List<JSONNode>();  
       foreach (JSONNode element in letters)
       {
-        text.text += element["character"];
+        Glets.Add(element);
       }
+      // Debug.Log(Glets[0]); 
+      for(int i = 0; i < 8; i++)
+      { 
+        GLetters[i].GetComponent<TextMeshProUGUI>().SetText(Glets[i]["character"]); 
+        // Debug.Log(text);
+        // text.SetText(element["character"]); 
+      }
+      
     }
 
     IEnumerator GetLetters()
@@ -57,4 +67,5 @@ public class TimerC : MonoBehaviour
       WordSetter del = SetWord;
       del(letterInfo);
     }
-}
+} 
+

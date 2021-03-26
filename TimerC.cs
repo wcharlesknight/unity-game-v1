@@ -14,13 +14,15 @@ public class TimerC : MonoBehaviour
     public float timeRemaining = 7;
     public bool timerIsRunning = false;
     public GameObject[] GLetters; 
+    public GameObject[] LetterBox;
     
     void Start()
     {   
+        // for (int i  = 0; i < 8; i++)
+        // {
+
+        // }
         timerIsRunning = true;
-        // Debug.Log(GLetters[0].GetComponent<Text>().text);
-        // Text text = GLetters[0].GetComponent<Text>();
-        // Debug.Log(text); 
     }
 
     void Update()
@@ -33,7 +35,7 @@ public class TimerC : MonoBehaviour
           timeRemaining -= Time.deltaTime; 
         }
         else
-        {
+        { 
           StartCoroutine(GetLetters());
           timeRemaining = 7; 
         }
@@ -49,14 +51,10 @@ public class TimerC : MonoBehaviour
       {
         Glets.Add(element);
       }
-      // Debug.Log(Glets[0]); 
       for(int i = 0; i < 8; i++)
       { 
         GLetters[i].GetComponent<TextMeshProUGUI>().SetText(Glets[i]["character"]); 
-        Debug.Log(Glets); 
-        // text.SetText(element["character"]); 
       }
-      
     }
 
     IEnumerator GetLetters()

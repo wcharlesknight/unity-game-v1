@@ -53,7 +53,7 @@ public class TimerC : MonoBehaviour
       for(int i = 0; i < 8; i++)
       { 
         GLetters[i].GetComponent<TextMeshProUGUI>().SetText(Glets[i]["character"]); 
-        // Debug.Log(text);
+        Debug.Log(Glets); 
         // text.SetText(element["character"]); 
       }
       

@@ -21,37 +21,53 @@ public class ChooseLetter : MonoBehaviour
     {
       if (backToPos == true)
       {
-        transform.position = Vector3.MoveTowards(transform.position, startingP, 0.4f); 
+        StartCoroutine(MoveBack());
       }
       if (currentLe >= 0 && backToPos == false)
       {
-      transform.position = Vector3.MoveTowards(transform.position, containers[currentLe].transform.position, 0.4f);
+        StartCoroutine(MoveTo());
       }
     }
     
     public void ToggleAnimation()
-    {  
-      Debug.Log(gameObject);
+    {   
+      
+      if (chosen == true)
+      {
+      StartCoroutine(SubtractOne()); 
+      }
+      if (chosen == false)
+      {
       currentLe = GlobalState.LettersPicked;
       StartCoroutine(AddOne()); 
+      }
+    }
+
+    IEnumerator MoveBack() 
+    {
+      yield return transform.position = Vector3.MoveTowards(transform.position, startingP, 0.4f); 
+    }
+
+    IEnumerator MoveTo()
+    { 
+      // yield return new WaitForSeconds(0.1f); 
+      yield return transform.position = Vector3.MoveTowards(transform.position, containers[currentLe].transform.position, 0.4f);
     }
 
     IEnumerator AddOne()
-    { 
-      if (chosen == true)
-      {
-        backToPos = true; 
-        StartCoroutine(SubtractOne());
-      }
-        yield return new WaitForSeconds(0.5f);
+    {  
+        // yield return new WaitForSeconds(0.1f);
         yield return GlobalState.LettersPicked += 1; 
-        yield return chosen = !chosen; 
-      
+        yield return chosen = true;  
+        yield return backToPos = false; 
     }
 
     IEnumerator SubtractOne()
-    {
+    { 
+      
       yield return GlobalState.LettersPicked -= 1; 
-      Debug.Log(GlobalState.LettersPicked); 
+      Debug.Log(GlobalState.LettersPicked);
+      yield return chosen = false; 
+      yield return backToPos = true; 
     }
 }

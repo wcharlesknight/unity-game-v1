@@ -9,13 +9,11 @@ public class ChooseLetter : MonoBehaviour
     int currentLe = -1;
     private Vector3 startingP;
     bool chosen = false;
-    bool backToPos = false;
+    public bool backToPos = false;
     public GameObject childText; 
     
     void Start()
     {   
-        // TMP_Text textM = childText.GetComponent<TMP_Text>();
-        // Debug.Log(textM.text); 
         Animator anim = gameObject.GetComponent<Animator>();
         anim.enabled = false; 
         startingP = transform.position; 
@@ -23,8 +21,11 @@ public class ChooseLetter : MonoBehaviour
 
     void Update()
     { 
-      Debug.Log(GlobalState.GaWord);  
-      if (backToPos == true)
+      if (GlobalState.timeRemaining  == 7)
+      {
+      StartCoroutine(Reset()); 
+      }
+      if (backToPos == true) 
       {
         StartCoroutine(MoveBack());
       }
@@ -36,17 +37,23 @@ public class ChooseLetter : MonoBehaviour
     
     public void ToggleAnimation()
     {   
-      
       if (chosen == true)
       {
       StartCoroutine(SubtractOne()); 
       }
       if (chosen == false)
       {
-    
       currentLe = GlobalState.LettersPicked;
       StartCoroutine(AddOne()); 
       }
+    }
+
+    IEnumerator Reset()
+    {
+      yield return backToPos = true; 
+      yield return chosen = false; 
+      yield return GlobalState.GaWord = "";
+      yield return GlobalState.LettersPicked = 0; 
     }
 
     IEnumerator MoveBack() 
@@ -65,6 +72,7 @@ public class ChooseLetter : MonoBehaviour
         yield return GlobalState.LettersPicked += 1;
         yield return chosen = true;  
         yield return backToPos = false; 
+        Debug.Log(GlobalState.GaWord.ToLower()); 
     }
 
     IEnumerator SubtractOne()

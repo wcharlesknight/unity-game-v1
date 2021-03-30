@@ -11,33 +11,30 @@ using System.IO;
 
 public class TimerC : MonoBehaviour
 {   
-    public float timeRemaining = 7;
+ 
     public bool timerIsRunning = false;
     public GameObject[] GLetters; 
     public GameObject[] LetterBox;
+    public Vector3[] startingL;
     
     void Start()
     {   
-        // for (int i  = 0; i < 8; i++)
-        // {
-
-        // }
         timerIsRunning = true;
     }
 
     void Update()
     { 
-      gameObject.GetComponent<TextMesh>().text = timeRemaining.ToString("0");
+      gameObject.GetComponent<TextMesh>().text = GlobalState.timeRemaining.ToString("0");
       if (timerIsRunning)
       {
-        if (timeRemaining > 0)
+        if (GlobalState.timeRemaining > 0)
         {
-          timeRemaining -= Time.deltaTime; 
+          GlobalState.timeRemaining -= Time.deltaTime; 
         }
         else
         { 
           StartCoroutine(GetLetters());
-          timeRemaining = 7; 
+          GlobalState.timeRemaining = 7; 
         }
       }
     }
